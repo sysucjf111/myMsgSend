@@ -7,6 +7,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MsgSend {
     public static void main(String[] args) {
@@ -26,13 +28,33 @@ public class MsgSend {
             }
         }
         if (index == -1){
-            System.out.println("未输入手机号码的运行参数或者手机号码不在在-phone之后，请重新输入。");
+            System.out.println("未输入手机号码的运行参数或者手机号码不位于在-phone之后，请重新输入。");
             return;
         }else if (index+1>=args.length){
             System.out.println("未输入手机号码，请重新输入。");
             return;
         }
+        if (!isPhoneNumber(args[index+1])){
+            System.out.println("未输入符合格式的手机号码，请重新输入");
+            return;
+        }
+
         SendMsg(args[index+1]);
+    }
+
+    public static boolean isPhoneNumber(String phoneNumber) {
+        if (phoneNumber == null || 0==phoneNumber.length()) {
+            return false;
+        }
+
+        String regex = "^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(16[5,6])|(17[0-8])|(18[0-9])|(19[1、5、8、9]))\\d{8}$";
+        if (phoneNumber.length() != 11) {
+            return false;
+        } else {
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(phoneNumber);
+            return m.matches();
+        }
     }
 
     private static void SendMsg(String mobileNumber) {
