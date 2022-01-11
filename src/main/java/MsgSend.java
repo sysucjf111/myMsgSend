@@ -1,3 +1,4 @@
+import com.sun.javafx.image.BytePixelSetter;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -9,20 +10,33 @@ import java.util.Scanner;
 
 public class MsgSend {
     public static void main(String[] args) {
-        if (args != null && args.length > 0){
-            System.out.println("向号码为"+args[0]+"的手机发信。");
-            SendMsg(args[0]);
-        } else {
-            System.out.println("未输入手机号码，请重新输入。");
-        }
+        startSendMsg(args);
     }
 
-    private static void startSendMsg() {
-        System.out.println("请输入你要发信的电话号码：");
-        SendMsg(new Scanner(System.in).nextLine());
+    private static void startSendMsg(String[] args) {
+        if (args == null || args.length == 0){
+            System.out.println("未输入任何运行参数，请重新输入。");
+            return;
+        }
+        int index = -1;
+        for (int i = 0;i<args.length;i++) {
+            if ("-phone".equals(args[i])){
+                index = i;
+                break;
+            }
+        }
+        if (index == -1){
+            System.out.println("未输入手机号码的运行参数或者手机号码不在在-phone之后，请重新输入。");
+            return;
+        }else if (index+1>=args.length){
+            System.out.println("未输入手机号码，请重新输入。");
+            return;
+        }
+        SendMsg(args[index+1]);
     }
 
     private static void SendMsg(String mobileNumber) {
+        System.out.println("向号码"+mobileNumber+"发信");
         String result = null;
         //确定目标地址——这个一天只能用一次
         String url="https://user.daojia.com/mobile/getcode?mobile=18312674405";
