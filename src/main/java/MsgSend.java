@@ -9,7 +9,12 @@ import java.util.Scanner;
 
 public class MsgSend {
     public static void main(String[] args) {
-        startSendMsg();
+        if (args != null && args.length > 0){
+            System.out.println("向号码为"+args[0]+"的手机发信。");
+            SendMsg(args[0]);
+        } else {
+            System.out.println("未输入手机号码，请重新输入。");
+        }
     }
 
     private static void startSendMsg() {
@@ -30,7 +35,7 @@ public class MsgSend {
         try {
             httpResponse=httpClient.execute(httpGet);
             //判断状态码是否为200
-            System.out.println(httpResponse.getStatusLine().getStatusCode());
+            System.out.println("状态码为:"+httpResponse.getStatusLine().getStatusCode());
             HttpEntity entity = httpResponse.getEntity();
             System.out.println("响应内容为:" + EntityUtils.toString(entity));
         } catch (IOException e) {
