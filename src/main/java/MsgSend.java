@@ -5,12 +5,16 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class MsgSend {
     public static void main(String[] args) {
+        startSendMsg();
+    }
 
-        SendMsg("13660021070");
-
+    private static void startSendMsg() {
+        System.out.println("请输入你要发信的电话号码：");
+        SendMsg(new Scanner(System.in).nextLine());
     }
 
     private static void SendMsg(String mobileNumber) {
